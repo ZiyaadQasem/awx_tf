@@ -22,7 +22,12 @@ resource "null_resource" "remote_exec" {
 
   provisioner "remote-exec" {
     inline = [
-      "echo Hello from Terraform on ${var.remote_ips[count.index]} > /tmp/hello-from-terraform.txt"
-    ]
+    <<-EOF
+      echo Hello from Terraform on ${var.remote_ips[count.index]} > /tmp/hello-from-terraform2.txt
+      mkdir -p /tmp/tf
+      touch /tmp/tf/init.log
+      echo Initialized on $(date) >> /tmp/tf/init.log
+    EOF
+  ]
   }
 }
