@@ -2,20 +2,9 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: List files in project directory
-      command: ls -l
+    - name: Terraform apply
+      community.general:
+        project_path: terraform/
+        state: present
+        force_init: true
 
-    - name: Initialize Terraform
-      command: terraform init
-      # args:
-      #   chdir: /runner/project/terraform
-
-    - name: Plan Terraform
-      command: terraform plan
-      # args:
-      #   chdir: /runner/project/terraform
-
-    - name: Apply Terraform
-      command: terraform apply -auto-approve
-      # args:
-      #   chdir: /runner/project/terraform
