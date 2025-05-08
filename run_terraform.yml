@@ -3,19 +3,19 @@
   gather_facts: false
   tasks:
     - name: List files in project directory
-      command: ls -l /runner
+      command: ls -l
 
     - name: Initialize Terraform
       command: terraform init
       args:
-        chdir: /runner/terraform
+        chdir: /terraform
 
     - name: Plan Terraform
       command: terraform plan
       args:
-        chdir: /runner/project/terraform
+        chdir: /terraform
 
     - name: Apply Terraform
       command: terraform apply -auto-approve
       args:
-        chdir: /runner/project/terraform
+        chdir: /terraform
