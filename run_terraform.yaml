@@ -5,14 +5,14 @@
     - name: Initialize Terraform
       command: terraform init
       args:
-        chdir: ./terraform-test
+        chdir: /runner/project/terraform-test
 
     - name: Plan Terraform
       command: terraform plan
       args:
-        chdir: ./terraform-test
+        chdir: /runner/project/terraform-test
 
     - name: Apply Terraform
       command: terraform apply -auto-approve
       args:
-        chdir: ./terraform-test
+        chdir: /runner/project/terraform-test
