@@ -1,10 +1,29 @@
 - name: Run Terraform from AWX EE
   hosts: localhost
   gather_facts: false
+
+  vars:
+    ssh_user: zqasem  # or the username used on your VMs
+    ssh_private_key_file: /runner/env/SSH_KEY
+    tf_dir: /runner/project/terraform
+
   tasks:
+    - name: Get IPs from inventory
+      set_fact:
+        remote_ips: "{{ groups['all'] }}"
+
+    - name: Generate Terraform vars
+      copy:
+        dest: "{{ tf_dir }}/auto.tfvars.json"
+        content: |
+          {
+            "remote_ips": {{ remote_ips | to_json }},
+            "ssh_user": "{{ ssh_user }}",
+            "ssh_private_key": "{{ lookup('file', ssh_private_key_file) | replace('\n', '\\n') }}"
+          }
+
     - name: Terraform apply
       community.general.terraform:
-        project_path: terraform/
+        project_path: "{{ tf_dir }}"
         state: present
         force_init: true
-
