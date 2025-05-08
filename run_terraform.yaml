@@ -1,0 +1,18 @@
+- name: Run Terraform from AWX EE
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Initialize Terraform
+      command: terraform init
+      args:
+        chdir: ./terraform-test
+
+    - name: Plan Terraform
+      command: terraform plan
+      args:
+        chdir: ./terraform-test
+
+    - name: Apply Terraform
+      command: terraform apply -auto-approve
+      args:
+        chdir: ./terraform-test
