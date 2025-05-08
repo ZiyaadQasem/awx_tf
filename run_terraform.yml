@@ -3,9 +3,9 @@
   gather_facts: false
 
   vars:
-    ssh_user: zqasem  # change if different
+    ssh_user: zqasem
+    ssh_private_key_file: /runner/env/SSH_KEY
     tf_dir: /runner/project/terraform
-    ssh_private_key_file: /runner/env/SSH_KEY  # AWX injects the credential here
 
   tasks:
     - name: Collect IPs from inventory group
