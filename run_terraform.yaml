@@ -2,6 +2,9 @@
   hosts: all
   gather_facts: false
   tasks:
+    - name: List contents of project folder
+      command: ls -la /runner/project/
+      
     - name: Initialize Terraform
       command: terraform init
       args:
