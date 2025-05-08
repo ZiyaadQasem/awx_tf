@@ -3,7 +3,7 @@
   gather_facts: false
   tasks:
     - name: Terraform apply
-      community.general:
+      community.general.terraform:
         project_path: terraform/
         state: present
         force_init: true
