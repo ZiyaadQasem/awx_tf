@@ -1,5 +1,5 @@
 - name: Run Terraform from AWX EE
-  hosts: all
+  hosts: localhost
   gather_facts: false
   tasks:
     - name: Terraform apply
