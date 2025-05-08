@@ -27,3 +27,6 @@
         project_path: "{{ tf_dir }}"
         state: present
         force_init: true
+        variables_files:
+          - "{{ tf_dir }}/auto.tfvars.json"
+
