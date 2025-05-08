@@ -1,5 +1,4 @@
 - name: Run Terraform from AWX EE
-  hosts: localhost
   gather_facts: false
   tasks:
     - name: Initialize Terraform
