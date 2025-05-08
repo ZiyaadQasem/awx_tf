@@ -7,15 +7,15 @@
 
     - name: Initialize Terraform
       command: terraform init
-      args:
-        chdir: /runner/project/terraform
+      # args:
+      #   chdir: /runner/project/terraform
 
     - name: Plan Terraform
       command: terraform plan
-      args:
-        chdir: /runner/project/terraform
+      # args:
+      #   chdir: /runner/project/terraform
 
     - name: Apply Terraform
       command: terraform apply -auto-approve
-      args:
-        chdir: /runner/project/terraform
+      # args:
+      #   chdir: /runner/project/terraform
