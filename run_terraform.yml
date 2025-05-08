@@ -8,9 +8,20 @@
     tf_dir: /runner/project/terraform
 
   tasks:
+     
     - name: Collect IPs from inventory group
       set_fact:
         remote_ips: "{{ groups['all'] }}"
+    
+    - name: Check if SSH key exists
+      stat:
+        path: /runner/env/SSH_KEY
+      register: key_file
+
+    - name: Debug key file info
+      debug:
+        var: key_file
+
 
     - name: Generate Terraform variable file
       copy:
