@@ -10,7 +10,7 @@
   tasks:
     - name: Collect IPs from inventory group
       set_fact:
-        remote_ips: "{{ groups['all'] | map('extract', hostvars, ['ansible_host']) | list }}"
+        remote_ips: "{{ groups['all'] }}"
 
     - name: Generate Terraform variable file
       copy:
