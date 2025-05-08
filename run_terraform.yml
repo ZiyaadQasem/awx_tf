@@ -1,0 +1,33 @@
+- name: Run Terraform via AWX EE
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    ssh_user: zqasem  # change if different
+    tf_dir: /runner/project/terraform
+    ssh_private_key_file: /runner/env/SSH_KEY  # AWX injects the credential here
+
+  tasks:
+    - name: Collect IPs from inventory group
+      set_fact:
+        remote_ips: "{{ groups['all'] | map('extract', hostvars, ['ansible_host']) | list }}"
+
+    - name: Generate Terraform variable file
+      copy:
+        dest: "{{ tf_dir }}/vars.auto.tfvars.json"
+        content: |
+          {
+            "remote_ips": {{ remote_ips | to_json }},
+            "ssh_user": "{{ ssh_user }}",
+            "ssh_private_key": "{{ lookup('file', ssh_private_key_file) | replace('\n', '\\n') }}"
+          }
+
+    - name: Terraform Init
+      command: terraform init
+      args:
+        chdir: "{{ tf_dir }}"
+
+    - name: Terraform Apply
+      command: terraform apply -auto-approve
+      args:
+        chdir: "{{ tf_dir }}"
