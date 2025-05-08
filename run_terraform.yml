@@ -1,44 +1,62 @@
-- name: Run Terraform via AWX EE
-  hosts: localhost
-  gather_facts: false
+# - name: Run Terraform via AWX EE
+#   hosts: localhost
+#   gather_facts: false
+
+#   vars:
+#     ssh_user: zqasem
+#     ssh_private_key_file: /runner/env/SSH_KEY
+#     tf_dir: /runner/project/terraform
+
+#   tasks:
+     
+#     - name: Collect IPs from inventory group
+#       set_fact:
+#         remote_ips: "{{ groups['all'] }}"
+    
+#     - name: Check if SSH key exists
+#       stat:
+#         path: /runner/env/SSH_KEY
+#       register: key_file
+
+#     - name: Debug key file info
+#       debug:
+#         var: key_file
+
+
+#     - name: Generate Terraform variable file
+#       copy:
+#         dest: "{{ tf_dir }}/vars.auto.tfvars.json"
+#         content: |
+#           {
+#             "remote_ips": {{ remote_ips | to_json }},
+#             "ssh_user": "{{ ssh_user }}",
+#             "ssh_private_key": "{{ lookup('file', ssh_private_key_file) | replace('\n', '\\n') }}"
+#           }
+
+#     - name: Terraform Init
+#       command: terraform init
+#       args:
+#         chdir: "{{ tf_dir }}"
+
+#     - name: Terraform Apply
+#       command: terraform apply -auto-approve
+#       args:
+#         chdir: "{{ tf_dir }}"
+
+
+---
+- hosts: all
+  gather_facts: no
 
   vars:
-    ssh_user: zqasem
-    ssh_private_key_file: /runner/env/SSH_KEY
-    tf_dir: /runner/project/terraform
+    project_dir: "/terraform" # folder that contains main.tf, ...
 
   tasks:
-     
-    - name: Collect IPs from inventory group
-      set_fact:
-        remote_ips: "{{ groups['all'] }}"
-    
-    - name: Check if SSH key exists
-      stat:
-        path: /runner/env/SSH_KEY
-      register: key_file
+    - name: Run terraform
+      community.general.terraform:
+        project_path: '{{ project_dir }}'
+        state: present
+      register: output
 
-    - name: Debug key file info
-      debug:
-        var: key_file
-
-
-    - name: Generate Terraform variable file
-      copy:
-        dest: "{{ tf_dir }}/vars.auto.tfvars.json"
-        content: |
-          {
-            "remote_ips": {{ remote_ips | to_json }},
-            "ssh_user": "{{ ssh_user }}",
-            "ssh_private_key": "{{ lookup('file', ssh_private_key_file) | replace('\n', '\\n') }}"
-          }
-
-    - name: Terraform Init
-      command: terraform init
-      args:
-        chdir: "{{ tf_dir }}"
-
-    - name: Terraform Apply
-      command: terraform apply -auto-approve
-      args:
-        chdir: "{{ tf_dir }}"
+    - debug:
+        var: output
